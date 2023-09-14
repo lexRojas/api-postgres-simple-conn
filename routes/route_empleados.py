@@ -9,7 +9,7 @@ route_empleado = APIRouter()
 @route_empleado.get("/empleados")
 def get_empleados(presupuesto=0):
    
-   with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
+   with conn().cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
       dict_cur.execute("select codigo_empleado,"+
                        "concat( trim(nombre1),' ',trim(nombre2),' ',apellido1,' ',apellido2) as nombre_completo, " + 
                        "concat( codigo_empleado,'-',trim(nombre1),' ', trim(nombre2),' ',apellido1,' ',apellido2) as nombre_codigo " + 

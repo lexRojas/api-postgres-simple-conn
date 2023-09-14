@@ -15,7 +15,9 @@ _database = 'millerdb'
 
 DATABASE_URL = "postgresql://"+_username + ":"+ _password +"@"+ _hostname +":5432/" + _database
 
-conn = psycopg2.connect(host=_hostname ,
-                             user=_username,
-                             password=_password,
-                             database=_database)
+def conn():
+    conn = psycopg2.connect(host=_hostname ,
+                    user=_username,
+                    password=_password,
+                    database=_database)
+    return conn

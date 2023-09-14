@@ -8,6 +8,6 @@ route_reset = APIRouter()
 
 @route_reset.get("/reset")
 def reset():
-   conn.rollback()
+   conn().rollback()
    return {"mensaje":'reseteado'}
 

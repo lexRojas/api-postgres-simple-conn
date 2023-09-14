@@ -8,7 +8,7 @@ route_elementos = APIRouter()
 
 @route_elementos.get("/tb_elementos")
 def get_elementos(presupuesto='', sector = 'A'):
-   with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
+   with conn().cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
       dict_cur.execute("select es.presupuesto, " + 
                        "es.cod_ele_sec, "+
                        "es.descripcion,"+
