@@ -8,7 +8,7 @@ from routes.route_sectores import route_sectores
 from routes.route_elementos import route_elementos
 from routes.route_empleados import route_empleado
 from routes.route_reset import route_reset
-
+from routes.route_actividades import route_actividades
 
 
 app = FastAPI()
@@ -35,3 +35,4 @@ app.include_router(route_presupuesto)
 app.include_router(route_sectores)
 app.include_router(route_elementos)
 app.include_router(route_empleado)
+app.include_router(route_actividades)
