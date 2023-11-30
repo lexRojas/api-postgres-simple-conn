@@ -28,7 +28,7 @@ def get_presupuesto(filtro : Optional[str] = None):
       sql = select(tb_presupuesto)
    else:
       filtro = '%'+filtro+'%'
-      sql = select(tb_presupuesto).where(tb_presupuesto.presupuesto.like (filtro))
+      sql = select(tb_presupuesto).where(tb_presupuesto.proyecto.like (filtro))
 
    result = session.scalars(sql).all()
    return result
