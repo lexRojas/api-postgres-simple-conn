@@ -1,0 +1,57 @@
+
+
+CREATE TABLE public.tb_elementos_sectores (
+	presupuesto bpchar(7) NOT NULL,
+	elemento numeric(3) NULL,
+	sector bpchar(1) NULL,
+	descripcion bpchar(50) NULL,
+	comentario text NULL,
+	cantidad_elemento numeric(10, 2) NULL,
+	cod_ele_sec bpchar(8) NOT NULL,
+	fecha_cambio date NULL DEFAULT 'now'::text::date,
+	cod_usuario bpchar(15) NULL,
+	unidad_medida numeric(4) NULL,
+	consecutivo numeric(4) NULL,
+	CONSTRAINT "PK_ELEMENTO" PRIMARY KEY (presupuesto, cod_ele_sec)
+);
+
+
+
+
+CREATE TABLE public.tb_unidad_medida (
+	cod_unidad_medida numeric(4) NOT NULL DEFAULT nextval('idunimed_inc'::regclass),
+	descripcion bpchar(30) NULL,
+	fecha_cambio date NULL DEFAULT 'now'::text::date,
+	cod_usuario bpchar(15) NULL,
+	descrip_larga bpchar(30) NULL,
+	CONSTRAINT pk_tb_unidad_medida PRIMARY KEY (cod_unidad_medida)
+);
+
+
+CREATE TABLE public.tb_presup_manobra (
+	presupuesto bpchar(7) NOT NULL,
+	codigo_manobra numeric(5) NOT NULL,
+	cantidad numeric(9, 2) NULL,
+	rendimiento numeric(9, 2) NULL,
+	cant_hht numeric(9, 2) NULL,
+	costo_hh numeric(9, 2) NULL,
+	costo_hht numeric(18, 2) NULL,
+	fecha_cambio date NULL,
+	cod_usuario bpchar(15) NULL,
+	unidad_medida numeric(4) NULL,
+	cod_ele_sec bpchar(8) NOT NULL,
+	CONSTRAINT pk_presupmanobra PRIMARY KEY (presupuesto, codigo_manobra, cod_ele_sec)
+);
+
+
+CREATE TABLE public.tb_manoobra (
+	codigo_manobra numeric(5) NOT NULL,
+	actividad bpchar(30) NULL,
+	rendimiento numeric(5, 2) NULL,
+	puesto bpchar(3) NULL,
+	cod_usuario bpchar(15) NULL,
+	fecha_cambio date NULL DEFAULT 'now'::text::date,
+	unidad_medida numeric(4) NULL,
+	CONSTRAINT pk_codigo_manobra PRIMARY KEY (codigo_manobra)
+);
+

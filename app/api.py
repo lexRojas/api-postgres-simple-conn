@@ -9,6 +9,7 @@ from routes.route_elementos import route_elementos
 from routes.route_empleados import route_empleado
 from routes.route_reset import route_reset
 from routes.route_actividades import route_actividades
+from routes.route_elem_detail import route_elem_detail
 from routes.route_vista_actividades import route_vista_actividades
 
 
@@ -38,3 +39,4 @@ app.include_router(route_elementos)
 app.include_router(route_empleado)
 app.include_router(route_actividades)
 app.include_router(route_vista_actividades)
+app.include_router(route_elem_detail)
