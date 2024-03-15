@@ -7,7 +7,7 @@ route_boleta = APIRouter()
 
 
 @route_boleta.post("/boleta")
-def set_boleta(data:boleta):
+def set_boleta(data):
    
    with conn().cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
       
