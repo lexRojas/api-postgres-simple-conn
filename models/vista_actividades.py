@@ -23,6 +23,8 @@ class elementos(dict):
 
 class empleados(BaseModel):
     codigo_empleado:str
+    nombre_codigo:str
+    nombre_completo:str
 
 
 class boleta(BaseModel):
@@ -38,5 +40,5 @@ class boleta(BaseModel):
     cerrada:bool
     codigo_manobra: int
     fecha_final: date
-    empleados_asignados: list[empleados] = []
+    empleados_asignados: list[empleados] 
     
