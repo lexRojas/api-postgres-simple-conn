@@ -21,7 +21,10 @@ async def boleta_post(data:boleta):
 
 def set_boleta(data:boleta):
    
-    query = sql.SQL("INSERT INTO horas.boleta (fecha_inicio,proyecto,ubicacion,comentarios,cantidad_medida,unidad_medida,hora_inicio,hora_final,cerrada,codigo_manobra,fecha_final) VALUES( %s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%s);")
+
+    #ingreso la boleta ...
+
+    query = sql.SQL("INSERT INTO horas.boleta (fecha_inicio,proyecto,ubicacion,comentarios,cantidad_medida,unidad_medida,hora_inicio,hora_final,cerrada,codigo_manobra,fecha_final) VALUES( %s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id")
 
     valores = (data.fecha_inicio,
                data.proyecto, 
@@ -39,6 +42,28 @@ def set_boleta(data:boleta):
     try:
         with conn.cursor() as cursor:
             cursor.execute(query, valores)
+            inserted_id = cursor.fetchone()[0]
         conn.commit()
     finally:
         db_pool.putconn(conn)
+
+    #ingreso los empleados ...
+
+    if(data.empleados_asignados):
+
+        for empleado in data.empleados_asignados:
+
+                query = sql.SQL("INSERT INTO horas.empleado_boleta (id_boleta, codigo_empleado) VALUES(%s, %s)")
+                valores = (inserted_id,empleado.codigo_empleado)
+
+                conn = db_pool.getconn()
+                try:
+                    with conn.cursor() as cursor:
+                        cursor.execute(query, valores)
+                    conn.commit()
+                finally:
+                    db_pool.putconn(conn)
+
+
+
+
