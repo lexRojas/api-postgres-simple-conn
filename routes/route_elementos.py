@@ -1,6 +1,6 @@
 import json
 from fastapi import APIRouter
-from config.db import conn
+from config.db import db_pool
 import psycopg2.extras
 
 route_elementos = APIRouter()
@@ -8,7 +8,8 @@ route_elementos = APIRouter()
 
 @route_elementos.get("/tb_elementos")
 def get_elementos(presupuesto='', sector = 'A'):
-   with conn().cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
+   conn = db_pool.getconn()
+   with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
       dict_cur.execute("select es.presupuesto,"  +
                            "es.cod_ele_sec," +
                            "es.descripcion," +
@@ -28,6 +29,7 @@ def get_elementos(presupuesto='', sector = 'A'):
                            "es.cantidad_elemento" )
       result = dict_cur.fetchall()
       dict_cur.close()
+      db_pool.putconn(conn)
 
    return result
 

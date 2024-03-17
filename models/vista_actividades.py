@@ -13,7 +13,7 @@ class cls_actividades(dict):
 
 class elementos(dict):
     presupuesto : str
-    cod_ele_sec : str
+    cod_ele_sec : int
     descripcion : str
     comentario  : str
     unidad_medida : str

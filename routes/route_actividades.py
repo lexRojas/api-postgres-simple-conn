@@ -1,6 +1,6 @@
 import json
 from fastapi import APIRouter
-from config.db import conn
+from config.db import db_pool
 import psycopg2.extras
 
 route_actividades = APIRouter()
@@ -8,7 +8,8 @@ route_actividades = APIRouter()
 
 @route_actividades.get("/tb_actividades")
 def get_actividades(presupuesto='', elemento = ''):
-   with conn().cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
+   conn = db_pool.getconn()
+   with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
       dict_cur.execute("select "
                            "tpm.presupuesto ," +
                            "tpm.codigo_manobra ," +
@@ -22,6 +23,6 @@ def get_actividades(presupuesto='', elemento = ''):
                         "where (presupuesto IN ('"+ presupuesto +"')) AND (cod_ele_sec IN ('"+ elemento+"'))" )
       result = dict_cur.fetchall()
       dict_cur.close()
-
+      db_pool.putconn(conn)
    return result
 

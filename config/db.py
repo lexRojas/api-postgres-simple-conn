@@ -1,7 +1,10 @@
-import psycopg2
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from psycopg2.pool import ThreadedConnectionPool
+
+
 
 #---LOCAL DATABASE ----
 
@@ -27,9 +30,20 @@ session = Session()
 Base = declarative_base()
 
 
-def conn():
-    conn = psycopg2.connect(host=_hostname ,
-                    user=_username,
-                    password=_password,
-                    database=_database)
-    return conn
+db_pool = ThreadedConnectionPool(
+    1,
+    30,
+    dbname=_database,
+    user=_username,
+    password=_password,
+    host=_hostname,
+    port=5432
+)
+
+
+# def conn():
+#     conn = psycopg2.connect(host=_hostname ,
+#                     user=_username,
+#                     password=_password,
+#                     database=_database)
+#     return conn

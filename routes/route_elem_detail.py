@@ -1,6 +1,7 @@
-import json
 from fastapi import APIRouter
-from config.db import conn
+from config.db import db_pool
+from fastapi import FastAPI, HTTPException
+from psycopg2 import sql
 import psycopg2.extras
 
 route_elem_detail = APIRouter()
@@ -8,7 +9,9 @@ route_elem_detail = APIRouter()
 
 @route_elem_detail.get("/elem_detail")
 def get_elem_detail(presupuesto='', sector = 'A'):
-   with conn().cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
+   conn = db_pool.getconn()
+
+   with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
       dict_cur.execute("select es.presupuesto,"  +
                            "es.cod_ele_sec," +
                            "es.descripcion," +
@@ -41,7 +44,7 @@ def get_elem_detail(presupuesto='', sector = 'A'):
          cantidad_elemento = row['cantidad_elemento']
          children          = row['children']
          
-         with conn().cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur_2:
+         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur_2:
             dict_cur_2.execute("select "
                                  "tpm.presupuesto ," +
                                  "tpm.codigo_manobra ," +
@@ -68,7 +71,7 @@ def get_elem_detail(presupuesto='', sector = 'A'):
                'actividades' : actividades
             })
 
-
+      db_pool.putconn(conn)
       return (elem_detail)
 
 
