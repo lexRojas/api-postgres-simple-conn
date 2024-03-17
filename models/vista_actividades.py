@@ -1,6 +1,6 @@
 from datetime import date, time
 
-from pydantic import BaseModel
+from pydantic import BaseModel 
 
 
 class cls_actividades(dict):
@@ -28,7 +28,6 @@ class empleados(BaseModel):
 
 
 class boleta(BaseModel):
-    id:int
     fecha_inicio : date
     proyecto  : str
     ubicacion  : str
