@@ -18,7 +18,10 @@ def get_empleados(presupuesto=0):
                         "inner join payroll.persona p on e.persona_idpersona = p.idpersona " +
                         "where fecha_salida is null " +
                         "and funcion = 'C-Campo' " +
-                        "and proyecto_presupuesto = "+ str(presupuesto)+"")
+                        "and proyecto_presupuesto = "+ str(presupuesto)+" " +
+         	            "and codigo_empleado not in (select eb.codigo_empleado  from horas.empleado_boleta eb " +
+								"                             inner join horas.boleta b on eb.id_boleta = b.id  " +
+								"                             where not b.cerrada )")
          result = dict_cur.fetchall()
          dict_cur.close()
          db_pool.putconn(conn)

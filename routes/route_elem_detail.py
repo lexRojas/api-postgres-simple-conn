@@ -29,6 +29,8 @@ def get_elem_detail(presupuesto='', sector = 'A'):
                            "es.comentario," +
                            "um.descripcion," +
                            "es.cantidad_elemento" )
+      
+
       elementos = dict_cur.fetchall()
       dict_cur.close()
 
@@ -45,17 +47,22 @@ def get_elem_detail(presupuesto='', sector = 'A'):
          children          = row['children']
          
          with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur_2:
-            dict_cur_2.execute("select "
-                                 "tpm.presupuesto ," +
-                                 "tpm.codigo_manobra ," +
-                                 "tm.actividad," +
-                                 "tum.descripcion unidad_medida," +
-                                 "tpm.cantidad," +
-                                 "tpm.rendimiento " +
-                              "from tb_presup_manobra tpm " +
-                              "inner join tb_manoobra tm on tpm.codigo_manobra = tm.codigo_manobra " +
-                              "inner join tb_unidad_medida tum  on tpm.unidad_medida = tum.cod_unidad_medida " +
-                              "where (presupuesto IN ('"+ presupuesto +"')) AND (cod_ele_sec IN ('"+ cod_ele_sec +"'))" )
+            dict_cur_2.execute(  "select "+
+                                 "     tpm.presupuesto ,  "+
+                                 "     tpm.codigo_manobra ,  "+
+                                 "     tm.actividad,  "+
+                                 "     tum.descripcion unidad_medida,  "+
+                                 "     tpm.cantidad - coalesce (b.cantidad_medida,0) cantidad,  "+
+                                 "     tpm.rendimiento   "+
+                                 "  from tb_presup_manobra tpm   "+
+                                 "  inner join tb_manoobra tm on tpm.codigo_manobra = tm.codigo_manobra   "+
+                                 "  inner join tb_unidad_medida tum  on tpm.unidad_medida = tum.cod_unidad_medida   "+
+                                 "  left join (select b.proyecto ,b.codigo_manobra , sum(b.cantidad_medida) cantidad_medida  from horas.boleta b group by b.proyecto ,b.codigo_manobra ) b on tpm.presupuesto = b.proyecto and tpm.codigo_manobra =b.codigo_manobra "+
+                                 "  where (presupuesto IN ('"+ presupuesto +"')) AND (cod_ele_sec IN ('"+ cod_ele_sec +"')) and (tpm.cantidad - coalesce (b.cantidad_medida,0))>0")
+
+
+
+
             actividades  = dict_cur_2.fetchall()
             dict_cur_2.close()
 
