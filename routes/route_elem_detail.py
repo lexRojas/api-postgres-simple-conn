@@ -81,19 +81,3 @@ def get_elem_detail(presupuesto='', sector = 'A'):
       db_pool.putconn(conn)
       return (elem_detail)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   return result
-
