@@ -1,6 +1,7 @@
-import json
+from datetime import date, time
 from fastapi import APIRouter
 from config.db import db_pool
+from psycopg2 import sql
 import psycopg2.extras
 
 route_empleado = APIRouter()
@@ -20,11 +21,45 @@ def get_empleados(presupuesto=0):
                         "and funcion = 'C-Campo' " +
                         "and proyecto_presupuesto = "+ str(presupuesto)+" " +
          	            "and codigo_empleado not in (select eb.codigo_empleado  from horas.empleado_boleta eb " +
-								"                             inner join horas.boleta b on eb.id_boleta = b.id  " +
-								"                             where not b.cerrada )")
+								"                             where eb.fecha_final is null)")
          result = dict_cur.fetchall()
          dict_cur.close()
          db_pool.putconn(conn)
       return result
    except Exception as e:
-      return []
+      return [e]
+
+
+@route_empleado.post ("/cerrar_asignacion_empleado")
+async def sacar_de_boleta_empleado(id_boleta=0, codigo_empleado='', fecha='', hora=''):
+
+   try:
+      fijar_valores(id_boleta, codigo_empleado, fecha, hora)
+      return {'mensaje':'Exclente'}
+   except Exception as e:
+      return {'mensaje':e}
+
+
+
+def fijar_valores(id_boleta, codigo_empleado, fecha, hora):
+   
+   query= sql.SQL("UPDATE horas.empleado_boleta " +
+                           "SET   fecha_final=%s ," + 
+                           "      hora_final=%s " +
+                           "where id_boleta=%s and codigo_empleado= %s")
+
+
+   valores = (fecha,hora,id_boleta,codigo_empleado)
+
+   conn = db_pool.getconn()
+
+   print('datos enviados por el usuarios....')
+   print(valores)
+
+   try:
+      with conn.cursor() as cursor:
+         cursor.execute(query,valores)
+
+      conn.commit()
+   finally:
+      db_pool.putconn(conn)
