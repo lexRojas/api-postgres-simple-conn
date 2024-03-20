@@ -53,8 +53,8 @@ def set_boleta(data:boleta):
 
         for empleado in data.empleados_asignados:
 
-                query = sql.SQL("INSERT INTO horas.empleado_boleta (id_boleta, codigo_empleado) VALUES(%s, %s)")
-                valores = (inserted_id,empleado.codigo_empleado)
+                query = sql.SQL("INSERT INTO horas.empleado_boleta (id_boleta, codigo_empleado, fecha_inicio, hora_inicio) VALUES(%s, %s)")
+                valores = (inserted_id,empleado.codigo_empleado, data.fecha_inicio, data.hora_inicio)
 
                 conn = db_pool.getconn()
                 try:
