@@ -35,14 +35,14 @@ def get_empleados(presupuesto=0):
 async def sacar_de_boleta_empleado(valores:cerrarValores):
 
    try:
-      fijar_valores(valores)
+      await fijar_valores(valores)
       return {'mensaje':'Exclente'}
    except Exception as e:
       return {'mensaje':e}
 
 
 
-def fijar_valores(values:cerrarValores):
+async def fijar_valores(values:cerrarValores):
    
    query= sql.SQL("UPDATE horas.empleado_boleta " +
                            "SET   fecha_final=%s ," + 
@@ -61,5 +61,7 @@ def fijar_valores(values:cerrarValores):
          cursor.execute(query,values)
 
       conn.commit()
+   except Exception as e:
+      return {'mensaje':e}
    finally:
       db_pool.putconn(conn)
