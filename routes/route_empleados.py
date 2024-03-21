@@ -31,12 +31,12 @@ def get_empleados(presupuesto=0):
       return [e]
 
 
-@route_empleado.post ("/cerrar")
+@route_empleado.patch ("/cerrar")
 async def sacar_de_boleta_empleado(valores:cerrarValores):
 
    try:
       await fijar_valores(valores)
-      return {'mensaje':'Exclente'}
+      return {'mensaje':'Excelente desde patch'}
    except Exception as e:
       return {'mensaje':e}
 
