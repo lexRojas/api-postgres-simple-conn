@@ -59,6 +59,7 @@ async def fijar_valores(values:cerrarValores):
    try:
       with conn.cursor() as cursor:
          cursor.execute(query,values)
+         print(query)
 
       conn.commit()
    except Exception as e:
