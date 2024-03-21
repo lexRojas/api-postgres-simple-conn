@@ -1,7 +1,9 @@
 from datetime import date, time
 from fastapi import APIRouter
 from config.db import db_pool
+from fastapi import FastAPI, HTTPException
 from psycopg2 import sql
+from psycopg2 import errors
 import psycopg2.extras
 from models.vista_actividades import cerrarValores
 import logging 
@@ -9,43 +11,27 @@ import logging
 route_empleado_patch = APIRouter()
 
 
-@route_empleado_patch.patch ("/cerrar")
-async def cerrar(valores:cerrarValores):
+@route_empleado_patch.post ("/cerrar")
+def cerrar(valores:cerrarValores):
 
-   try:
-      await fijar_valores(valores)
-      return {'mensaje':'Excelente desde patch'}
-   except Exception as e:
-      return {'mensaje':e}
+   #query= sql.SQL("UPDATE horas.empleado_boleta SET fecha_final=%s          , hora_final=%s      where id_boleta=%s and codigo_empleado=%s ;")
 
+   strFecha = valores.fecha_final.strftime("%Y-%m-%d")
+   strHora = valores.hora_final.strftime("%H:%M") 
 
 
-async def fijar_valores(values:cerrarValores):
+   miSQL = "UPDATE horas.empleado_boleta SET fecha_final='"+ strFecha +"', hora_final='"+ strHora +"' where id_boleta="+ str(valores.id_boleta) +" and codigo_empleado='"+ valores.codigo_empleado +"';"
    
-   query= sql.SQL("UPDATE horas.empleado_boleta " +
-                           "SET   fecha_final=%s ," + 
-                           "      hora_final=%s " +
-                           "where id_boleta=%s and codigo_empleado= %s")
-
-
-
    conn = db_pool.getconn()
 
-   print('datos enviados por el usuarios....')
-   
-   print(values)
-   print(query)
-
-
+   print(miSQL)
 
    try:
-      with conn.cursor() as cursor:
-         cursor.execute(query,values)
-         print(query)
-
-      
-      logging.info(conn.commit())
-   except Exception as e:
+      with conn.cursor() as icursor:
+         icursor.execute(miSQL)
+      conn.commit()
+      return {'mensaje':'Felicidades!!!'}
+   except  Exception as e:
       return {'mensaje':e}
    finally:
       db_pool.putconn(conn)

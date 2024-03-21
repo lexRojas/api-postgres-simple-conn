@@ -37,7 +37,9 @@ def set_boleta(data:boleta):
                data.cerrada,        
                data.codigo_manobra,
                data.fecha_final)
-    
+    print(valores)
+
+
     conn = db_pool.getconn()
     try:
         with conn.cursor() as cursor:

@@ -43,7 +43,7 @@ def get_boleta(presupuesto='', cerrada = False):
                                 " inner join payroll.empleado e on eb.codigo_empleado = e.codigo_empleado " +
                                 " inner join payroll.persona_empleado pe on e.idempleado  = pe.empleadoes_idempleado " +
                                 " inner join payroll.persona p on pe.persona_idpersona = p.idpersona " +
-                                " where b.id = " + str(id) )
+                                " where b.id = " + str(id) +" and eb.fecha_final is null" )
 
 
 
