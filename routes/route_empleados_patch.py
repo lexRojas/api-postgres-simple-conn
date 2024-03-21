@@ -32,7 +32,9 @@ async def fijar_valores(values:cerrarValores):
    conn = db_pool.getconn()
 
    print('datos enviados por el usuarios....')
-   logging.info(values)
+   
+   print(values)
+   print(query)
 
 
 
