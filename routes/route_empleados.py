@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from config.db import db_pool
 from psycopg2 import sql
 import psycopg2.extras
+from models.vista_actividades import cerrarValores
 
 route_empleado = APIRouter()
 
@@ -31,17 +32,17 @@ def get_empleados(presupuesto=0):
 
 
 @route_empleado.post ("/cerrar")
-async def sacar_de_boleta_empleado(id_boleta=0, codigo_empleado='', fecha='', hora=''):
+async def sacar_de_boleta_empleado(valores:cerrarValores):
 
    try:
-      fijar_valores(id_boleta, codigo_empleado, fecha, hora)
+      fijar_valores(valores)
       return {'mensaje':'Exclente'}
    except Exception as e:
       return {'mensaje':e}
 
 
 
-def fijar_valores(id_boleta, codigo_empleado, fecha, hora):
+def fijar_valores(values:cerrarValores):
    
    query= sql.SQL("UPDATE horas.empleado_boleta " +
                            "SET   fecha_final=%s ," + 
@@ -49,16 +50,15 @@ def fijar_valores(id_boleta, codigo_empleado, fecha, hora):
                            "where id_boleta=%s and codigo_empleado= %s")
 
 
-   valores = (fecha,hora,id_boleta,codigo_empleado)
 
    conn = db_pool.getconn()
 
    print('datos enviados por el usuarios....')
-   print(valores)
+   print(values)
 
    try:
       with conn.cursor() as cursor:
-         cursor.execute(query,valores)
+         cursor.execute(query,values)
 
       conn.commit()
    finally:

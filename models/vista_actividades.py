@@ -40,4 +40,9 @@ class boleta(BaseModel):
     codigo_manobra: int
     fecha_final: date
     empleados_asignados: list[empleados] 
-    
+
+class cerrarValores (BaseModel):
+    fecha: date
+    hora:time
+    id_boleta: int
+    codigo_empleado: str
