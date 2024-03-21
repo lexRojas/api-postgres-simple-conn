@@ -32,7 +32,7 @@ def get_empleados(presupuesto=0):
 
 
 @route_empleado.patch ("/cerrar")
-async def sacar_de_boleta_empleado(valores:cerrarValores):
+async def cerrar(valores:cerrarValores):
 
    try:
       await fijar_valores(valores)
