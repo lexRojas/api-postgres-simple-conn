@@ -30,7 +30,7 @@ def get_empleados(presupuesto=0):
       return [e]
 
 
-@route_empleado.post ("/cerrar_asignacion_empleado")
+@route_empleado.post ("/cerrar")
 async def sacar_de_boleta_empleado(id_boleta=0, codigo_empleado='', fecha='', hora=''):
 
    try:
