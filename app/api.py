@@ -14,6 +14,8 @@ from routes.route_vista_actividades import route_vista_actividades
 from routes.route_boleta import route_boleta
 from routes.route_boleta_detail import route_boleta_detail
 from routes.route_empleados_patch import route_empleado_patch
+from routes.route_empleados_post import route_empleado_post
+from routes.route_boleta_patch import route_boleta_patch
 
 app = FastAPI()
 
@@ -45,3 +47,5 @@ app.include_router(route_elem_detail)
 app.include_router(route_boleta)
 app.include_router(route_boleta_detail)
 app.include_router(route_empleado_patch)
+app.include_router(route_empleado_post)
+app.include_router(route_boleta_patch)

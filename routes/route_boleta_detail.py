@@ -16,7 +16,8 @@ def get_boleta(presupuesto='', cerrada = False):
                         "   b.fecha_inicio, " +
                         "   b.codigo_manobra ," +
                         "   b.comentarios," +
-                        "   concat( b.cantidad_medida,' ' ,b.unidad_medida) cantidad_asignada " +
+                        "   concat( b.cantidad_medida,' ' ,b.unidad_medida) cantidad_asignada, " +
+                        "   b.cerrada " +
                      "from horas.boleta b " +
                      "where b.proyecto  = '"+ presupuesto+"' and cerrada =" + cerrada)
       
@@ -33,6 +34,7 @@ def get_boleta(presupuesto='', cerrada = False):
          codigo_manobra    = row['codigo_manobra']
          comentarios       = row['comentarios']
          cantidad_asignada = row['cantidad_asignada']
+         cerrada           = row['cerrada']
          
          with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur_2:
             dict_cur_2.execute("select b.id, " +
@@ -57,7 +59,8 @@ def get_boleta(presupuesto='', cerrada = False):
                'codigo_manobra'    :codigo_manobra,
                'comentarios'       :comentarios,
                'cantidad_asignada' :cantidad_asignada,
-               'empleados'         : empleados
+               'cerrada'           :cerrada,  
+               'empleados'         :empleados
             })
 
       db_pool.putconn(conn)

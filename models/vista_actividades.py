@@ -46,3 +46,17 @@ class cerrarValores (BaseModel):
     hora_final:time
     id_boleta: int
     codigo_empleado: str
+
+
+class addEmpleadosClass (BaseModel):
+    id_boleta: int
+    codigo_empleado: str
+    fecha_inicio: date
+    hora_inicio:time
+
+
+
+class cerrarBoleta (BaseModel):
+    id_boleta: list[int]
+    fecha_final: date
+    hora_final:time
