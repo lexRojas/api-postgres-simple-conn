@@ -14,6 +14,7 @@ def get_boleta(presupuesto='', cerrada = False):
    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
       dict_cur.execute("select b.id, " +
                         "   b.fecha_inicio, " +
+                        "   b.hora_inicio, " +
                         "   b.codigo_manobra ," +
                         "   b.comentarios," +
                         "   concat( b.cantidad_medida,' ' ,b.unidad_medida) cantidad_asignada, " +
